@@ -2,11 +2,18 @@ import * as React from 'react'
 
 import { NextUIProvider } from '@nextui-org/react'
 
+import { SocketContextProvider } from './context/socket.context'
+import { VesselsContextProvider } from './context/vessels.context'
+
 export default function Providers({ children }:{children: React.ReactNode}) {
-  // 2. Wrap NextUIProvider at the root of your app
+
   return (
     <NextUIProvider>
-      {children}
+      <SocketContextProvider>
+        <VesselsContextProvider>
+          {children}
+        </VesselsContextProvider>
+      </SocketContextProvider>
     </NextUIProvider>
   )
 }
