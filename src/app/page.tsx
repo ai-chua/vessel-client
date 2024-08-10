@@ -1,13 +1,17 @@
 'use client'
 
-import { Button } from '@nextui-org/button'
+import { useContext } from 'react'
+
+
+import VesselsTableComponent from '@/components/vessels-table.component'
+import { VesselsContext } from '@/utils/context/vessels.context'
 
 export default function Home() {
+  const { vessels } = useContext(VesselsContext)
+
   return (
     <main>
-      Hello world
-      <br /><br />
-      <Button color="primary">Click me</Button>
+      <VesselsTableComponent vessels={vessels} />
     </main>
   )
 }

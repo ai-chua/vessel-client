@@ -5,6 +5,7 @@ import { useContext, useEffect } from 'react'
 import { Socket } from 'socket.io-client'
 
 import { SocketContext } from '@/utils/context/socket.context'
+import { VesselsContext } from '@/utils/context/vessels.context'
 import { getSocket } from '@/utils/socket'
 import { CurrentVesselInformationPayload, WEBSOCKET_EVENTS } from '@/utils/types'
 
@@ -13,6 +14,7 @@ export default function WebsocketComponent({ children }: {
 }) {
   const socket: Socket = getSocket()
   const { connect } = useContext(SocketContext)
+  const { initialiseVesselData } = useContext(VesselsContext)
   
   useEffect(() => {
     const handleConnect = () => {
@@ -24,8 +26,8 @@ export default function WebsocketComponent({ children }: {
       console.log('disconnected from server')
     }
 
-    const handleReceiveCurrentData = (data: CurrentVesselInformationPayload) => {
-      console.log('received current data', data)
+    const handleReceiveCurrentData = (message: CurrentVesselInformationPayload) => {
+      initialiseVesselData(message.data)
     }
 
     // Attach listeners
@@ -39,7 +41,7 @@ export default function WebsocketComponent({ children }: {
       socket.off('disconnect', handleDisconnect)
       socket.off(WEBSOCKET_EVENTS.CURRENT, handleReceiveCurrentData)
     }
-  }, [connect, socket])
+  }, [connect, initialiseVesselData, socket])
 
   return <>{children}</>
 }
