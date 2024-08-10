@@ -22,15 +22,13 @@ export const VesselsContextProvider: React.FC<{children: React.ReactNode}> = ({ 
   const [vesselsData, setVesselsData] = useState<VesselsData>({})
 
   function upsertVesselData(data: UpdatedVesselInformation) {
-    console.info('Not implemented yet')
-    // setVesselsData(prevData => ({
-    //   ...prevData,
-    //   [data.imo]: data
-    // }))
+    setVesselsData(prevData => ({
+      ...prevData,
+      [data.imo]: { ...prevData[data.imo], ...data }
+    }))
   }
 
   function initialiseVesselData(data: VesselInformation[]) {
-    console.log('called init')
     const allVessels: VesselsData = {}
 
     for (const vessel of data) {

@@ -14,7 +14,7 @@ export default function WebsocketComponent({ children }: {
 }) {
   const socket: Socket = getSocket()
   const { connect } = useContext(SocketContext)
-  const { initialiseVesselData } = useContext(VesselsContext)
+  const { initialiseVesselData, upsertVesselData } = useContext(VesselsContext)
   
   useEffect(() => {
     const handleConnect = () => {
@@ -26,22 +26,28 @@ export default function WebsocketComponent({ children }: {
       console.log('disconnected from server')
     }
 
-    const handleReceiveCurrentData = (message: CurrentVesselInformationPayload) => {
+    const handleReceiveCurrentDataEvent = (message: CurrentVesselInformationPayload) => {
       initialiseVesselData(message.data)
+    }
+
+    const handleLatestVesselInformationEvent = (data: any) => {
+      upsertVesselData(data)
     }
 
     // Attach listeners
     socket.on('connect', handleConnect)
     socket.on('disconnect', handleDisconnect)
-    socket.on(WEBSOCKET_EVENTS.CURRENT, handleReceiveCurrentData)
+    socket.on(WEBSOCKET_EVENTS.CURRENT, handleReceiveCurrentDataEvent)
+    socket.on(WEBSOCKET_EVENTS.LATEST, handleLatestVesselInformationEvent)
 
     // Cleanup listeners on component unmount
     return () => {
       socket.off('connect', handleConnect)
       socket.off('disconnect', handleDisconnect)
-      socket.off(WEBSOCKET_EVENTS.CURRENT, handleReceiveCurrentData)
+      socket.off(WEBSOCKET_EVENTS.CURRENT, handleReceiveCurrentDataEvent)
+      socket.off(WEBSOCKET_EVENTS.LATEST, handleLatestVesselInformationEvent)
     }
-  }, [connect, initialiseVesselData, socket])
+  }, [connect, initialiseVesselData, socket, upsertVesselData])
 
   return <>{children}</>
 }
