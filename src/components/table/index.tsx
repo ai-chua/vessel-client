@@ -1,29 +1,41 @@
-import { useCallback } from 'react'
+import { useContext } from 'react'
 
-import { Button, Table, TableBody, TableCell, TableColumn as NextUITableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { Button, TableColumn as NextUITableColumn, Table, TableBody, TableCell, TableHeader, TableRow } from '@nextui-org/react'
 
 import { CustomTableColumn, tableColumns } from './table-columns'
 
-import { VesselInformation } from '@/utils/types'
+import { TrackerContext } from '@/utils/context/tracker.context'
+import { VesselTableData } from '@/utils/types'
 
-export default function VesselsTableComponent({ vessels }: {vessels: VesselInformation[]}) {
-  const renderCell = useCallback((vessel: VesselInformation, columnKey: CustomTableColumn['key']) => {
-    switch (columnKey) {
-      case 'trackButton': {
-        return (
-          <Button size="sm">
-            Track
-          </Button> 
-        )
-      }
-      default:
-        return vessel[columnKey]
+export default function VesselsTableComponent({ vessels }: {vessels: VesselTableData[]}) {
+  const { trackVessel } = useContext(TrackerContext)
+
+  const renderCell = (vessel: VesselTableData, columnKey: CustomTableColumn['key']) => {
+  switch (columnKey) {
+    case 'isTracked': {
+      return (
+        <>
+        <Button
+          color={vessel.isTracked ? 'success' : 'default'}
+          size="sm"
+          disabled={vessel.isTracked}
+          onPress={() => {
+            trackVessel(vessel.imo)
+          }}
+        >
+          {vessel.isTracked ? 'Live': 'Track'}
+        </Button>
+        </>
+      )
     }
-  }, [])
+    default:
+      return vessel[columnKey]
+    }
+  }
 
   return (
     <>
-    <Table aria-label="Example table with dynamic content">
+    <Table aria-label="Table with live vessel data">
       <TableHeader columns={tableColumns}>
         {(column) => <NextUITableColumn key={column.key}>{column.label}</NextUITableColumn>}
       </TableHeader>

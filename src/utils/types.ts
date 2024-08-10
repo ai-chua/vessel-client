@@ -19,3 +19,7 @@ export type CurrentVesselInformationPayload = {
   message: string,
   data: VesselInformation[]
 }
+
+export type VesselTableData = VesselInformation & {
+  isTracked: boolean
+}

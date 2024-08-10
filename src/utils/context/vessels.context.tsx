@@ -1,34 +1,34 @@
 'use client'
 
-import React, { createContext, useState } from 'react'
+import React, { createContext, useCallback, useState } from 'react'
 
 import { UpdatedVesselInformation, VesselInformation } from '../types'
 
 export type VesselsData = Record<VesselInformation['imo'], VesselInformation>
 
 export type VesselsContextProps = {
-  vessels: VesselInformation[],
-  upsertVesselData: (data: UpdatedVesselInformation) => void
   initialiseVesselData: (data: VesselInformation[]) => void
+  upsertVesselData: (data: UpdatedVesselInformation) => void
+  vessels: VesselInformation[],
 }
 
 export const VesselsContext = createContext<VesselsContextProps>({
-  vessels: [],
+  initialiseVesselData: (data: VesselInformation[]) => null,
   upsertVesselData: (data: UpdatedVesselInformation) => null,
-  initialiseVesselData: (data: VesselInformation[]) => null
+  vessels: []
 })
 
 export const VesselsContextProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [vesselsData, setVesselsData] = useState<VesselsData>({})
 
-  function upsertVesselData(data: UpdatedVesselInformation) {
+  const upsertVesselData = useCallback((data: UpdatedVesselInformation) => {
     setVesselsData(prevData => ({
       ...prevData,
       [data.imo]: { ...prevData[data.imo], ...data }
     }))
-  }
+  }, [])
 
-  function initialiseVesselData(data: VesselInformation[]) {
+  const initialiseVesselData = useCallback((data: VesselInformation[]) => {
     const allVessels: VesselsData = {}
 
     for (const vessel of data) {
@@ -36,14 +36,14 @@ export const VesselsContextProvider: React.FC<{children: React.ReactNode}> = ({ 
     }
 
     setVesselsData(allVessels)
-  }
+  }, [])
 
   return (
     <VesselsContext.Provider
       value={{
-        vessels: Object.values(vesselsData),
+        initialiseVesselData,
         upsertVesselData,
-        initialiseVesselData
+        vessels: Object.values(vesselsData)
       }}
     >
       {children}

@@ -14,7 +14,7 @@ export default function WebsocketComponent({ children }: {
 }) {
   const socket: Socket = getSocket()
   const { connect, disconnect } = useContext(SocketContext)
-  const { initialiseVesselData, upsertVesselData } = useContext(VesselsContext)
+  const { initialiseVesselData, upsertVesselData, vessels } = useContext(VesselsContext)
   
   useEffect(() => {
     const handleConnect = () => {
@@ -30,6 +30,7 @@ export default function WebsocketComponent({ children }: {
     const handleCurrentVesselInformationEvent = (message: CurrentVesselInformationPayload) => {
       console.info('Received currentData', message)
       initialiseVesselData(message.data)
+      console.log('aaaaa', vessels)
     }
 
     const handleLatestVesselInformationEvent = (data: any) => {
