@@ -1,3 +1,49 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:import/typescript"
+  ],
+  "rules": {
+		"quotes": [
+			"warn",
+			"single"
+		],
+		"object-curly-spacing": [
+			"warn",
+			"always"
+		],
+		"comma-dangle": [
+			"warn",
+			"never"
+		],
+		"semi": [
+			"warn",
+			"never"
+		],
+    "import/order": [
+			"warn",
+			{
+				"alphabetize": {
+					"caseInsensitive": false,
+					"order": "asc"
+				},
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+				"groups": [
+					"builtin",
+					"external",
+					"parent",
+					"sibling",
+					"index"
+				],
+				"newlines-between": "always"
+			}
+		]
+  }
 }
