@@ -2,24 +2,24 @@
 
 import React, { createContext, useState } from 'react'
 
-import { VesselInformation } from '../types'
+import { UpdatedVesselInformation } from '../types'
 
-export type VesselsData = Record<string, VesselInformation>
+export type VesselsData = Record<string, UpdatedVesselInformation>
 
 export type VesselsContextProps = {
   vessels: VesselsData,
-  upsertVesselData: (data: VesselInformation) => void
+  upsertVesselData: (data: UpdatedVesselInformation) => void
 }
 
 export const VesselsContext = createContext<VesselsContextProps>({
   vessels: {},
-  upsertVesselData: (data: VesselInformation) => null
+  upsertVesselData: (data: UpdatedVesselInformation) => null
 })
 
 export const VesselsContextProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [vesselsData, setVesselsData] = useState<VesselsData>({})
 
-  function upsertVesselData(data: VesselInformation) {
+  function upsertVesselData(data: UpdatedVesselInformation) {
     setVesselsData(prevData => ({
       ...prevData,
       [data.imo]: data

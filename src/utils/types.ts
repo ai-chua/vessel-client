@@ -1,11 +1,21 @@
-export interface VesselInformation {
+export interface UpdatedVesselInformation {
   imo: number;
   lat: number;
   lng: number;
   destination: string;
 }
 
-export type TrackedVesselInformation = VesselInformation & {
+export type VesselInformation = UpdatedVesselInformation & {
   id: number;
   name: string;
+}
+
+export enum WEBSOCKET_EVENTS {
+  LATEST = 'latestVesselInformation',
+  CURRENT = 'currentVesselInformation'
+}
+
+export type CurrentVesselInformationPayload = {
+  message: string,
+  data: VesselInformation[]
 }

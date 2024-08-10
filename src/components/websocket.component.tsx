@@ -6,6 +6,7 @@ import { Socket } from 'socket.io-client'
 
 import { SocketContext } from '@/utils/context/socket.context'
 import { getSocket } from '@/utils/socket'
+import { CurrentVesselInformationPayload, WEBSOCKET_EVENTS } from '@/utils/types'
 
 export default function WebsocketComponent({ children }: {
   children: React.ReactNode
@@ -23,14 +24,20 @@ export default function WebsocketComponent({ children }: {
       console.log('disconnected from server')
     }
 
+    const handleReceiveCurrentData = (data: CurrentVesselInformationPayload) => {
+      console.log('received current data', data)
+    }
+
     // Attach listeners
     socket.on('connect', handleConnect)
     socket.on('disconnect', handleDisconnect)
+    socket.on(WEBSOCKET_EVENTS.CURRENT, handleReceiveCurrentData)
 
     // Cleanup listeners on component unmount
     return () => {
       socket.off('connect', handleConnect)
       socket.off('disconnect', handleDisconnect)
+      socket.off(WEBSOCKET_EVENTS.CURRENT, handleReceiveCurrentData)
     }
   }, [connect, socket])
 

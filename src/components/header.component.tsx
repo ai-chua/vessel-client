@@ -12,7 +12,7 @@ export default function HeaderComponent() {
       <div>
         Vessels Dashboard
       </div>
-      <div>
+      <div className='align-middle	'>
         Status: {
         isConnected ? (
           <Chip size="sm" color="success">Online</Chip>
