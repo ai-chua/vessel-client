@@ -2,6 +2,7 @@ import { SERVER_PORT } from './consts'
 import { VesselInformation } from './types'
 
 export async function postTrackRequest(vesselIds: VesselInformation['imo'][]): Promise<void> {
+  console.log('Sending POST request to /api/track', vesselIds)
   try {
     const response = await fetch(`http://localhost:${SERVER_PORT}/api/track`, {
       method: 'POST',
