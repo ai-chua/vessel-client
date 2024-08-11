@@ -27,7 +27,7 @@ export const TrackerContextProvider: React.FC<{children: React.ReactNode}> = ({ 
       return prevTracked
     })
 
-    console.log('Added', imo, 'to trackedVessels in context')
+    console.log('Added', imo, 'to trackedVessels in context at', new Date().toString())
   }, [])
 
   const untrackVessel = useCallback((imo: VesselInformation['imo']) => {

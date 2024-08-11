@@ -6,6 +6,7 @@ import { Socket } from 'socket.io-client'
 
 import { SocketContext } from '@/utils/context/socket.context'
 import { VesselsContext } from '@/utils/context/vessels.context'
+import { useTracker } from '@/utils/hooks/use-tracker'
 import { getSocket } from '@/utils/socket'
 import { CurrentVesselInformationPayload, WEBSOCKET_EVENTS } from '@/utils/types'
 
@@ -17,6 +18,7 @@ export default function WebsocketComponent({ children }: WebsocketComponentProps
   const socket: Socket = getSocket()
   const { connect, disconnect } = useContext(SocketContext)
   const { initialiseVesselData, upsertVesselData, vessels } = useContext(VesselsContext)
+  const { updateLastReceivedTimestamp } = useTracker()
   
   useEffect(() => {
     const handleConnect = () => {
@@ -32,11 +34,13 @@ export default function WebsocketComponent({ children }: WebsocketComponentProps
     const handleCurrentVesselInformationEvent = (message: CurrentVesselInformationPayload) => {
       console.info('handleCurrentVesselInformationEvent received message', message)
       initialiseVesselData(message.data)
+      updateLastReceivedTimestamp(Date.now())
     }
 
     const handleLatestVesselInformationEvent = (data: any) => {
       console.info('handleLatestVesselInformationEvent received message', data, 'at', new Date().toString())
       upsertVesselData(data)
+      updateLastReceivedTimestamp(Date.now())
     }
 
     const handleConnectionError = (error: any) => {
@@ -70,7 +74,14 @@ export default function WebsocketComponent({ children }: WebsocketComponentProps
       socket.off(WEBSOCKET_EVENTS.CURRENT, handleCurrentVesselInformationEvent)
       socket.off(WEBSOCKET_EVENTS.LATEST, handleLatestVesselInformationEvent)
     }
-  }, [connect, disconnect, initialiseVesselData, socket, upsertVesselData])
+  }, [
+    connect,
+    disconnect,
+    initialiseVesselData,
+    socket,
+    updateLastReceivedTimestamp,
+    upsertVesselData
+  ])
 
   return <>{children}</>
 }
