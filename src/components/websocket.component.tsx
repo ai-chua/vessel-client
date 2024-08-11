@@ -9,9 +9,11 @@ import { VesselsContext } from '@/utils/context/vessels.context'
 import { getSocket } from '@/utils/socket'
 import { CurrentVesselInformationPayload, WEBSOCKET_EVENTS } from '@/utils/types'
 
-export default function WebsocketComponent({ children }: {
+interface WebsocketComponentProps {
   children: React.ReactNode
-}) {
+}
+
+export default function WebsocketComponent({ children }: WebsocketComponentProps) {
   const socket: Socket = getSocket()
   const { connect, disconnect } = useContext(SocketContext)
   const { initialiseVesselData, upsertVesselData, vessels } = useContext(VesselsContext)

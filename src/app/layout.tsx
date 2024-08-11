@@ -22,11 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <WebsocketComponent>
-            <BaseContainer>
-              {children}
-            </BaseContainer>
-          </WebsocketComponent>
+          <BaseContainer>
+            {children}
+          </BaseContainer>
         </Providers>
       </body>
     </html>
