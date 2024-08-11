@@ -8,7 +8,7 @@ import { TrackerContext } from '@/utils/context/tracker.context'
 import { VesselTableData } from '@/utils/types'
 
 export default function VesselsTableComponent({ vessels }: {vessels: VesselTableData[]}) {
-  const { trackVessel } = useContext(TrackerContext)
+  const { trackVessel, untrackVessel } = useContext(TrackerContext)
 
   const renderCell = (vessel: VesselTableData, columnKey: CustomTableColumn['key']) => {
   switch (columnKey) {
@@ -18,9 +18,8 @@ export default function VesselsTableComponent({ vessels }: {vessels: VesselTable
         <Button
           color={vessel.isTracked ? 'success' : 'default'}
           size="sm"
-          disabled={vessel.isTracked}
           onPress={() => {
-            trackVessel(vessel.imo)
+            vessel.isTracked ? untrackVessel(vessel.imo) : trackVessel(vessel.imo)
           }}
         >
           {vessel.isTracked ? 'Live': 'Track'}

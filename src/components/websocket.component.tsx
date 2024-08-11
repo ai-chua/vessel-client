@@ -28,13 +28,12 @@ export default function WebsocketComponent({ children }: {
     }
 
     const handleCurrentVesselInformationEvent = (message: CurrentVesselInformationPayload) => {
-      console.info('Received currentData', message)
+      console.info('handleCurrentVesselInformationEvent received message', message)
       initialiseVesselData(message.data)
-      console.log('aaaaa', vessels)
     }
 
     const handleLatestVesselInformationEvent = (data: any) => {
-      console.info('Received latest vessel information', data)
+      console.info('handleLatestVesselInformationEvent received message', data)
       upsertVesselData(data)
     }
 
