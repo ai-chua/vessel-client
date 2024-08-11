@@ -12,19 +12,19 @@ export default function VesselsTableComponent({ vessels }: {vessels: VesselTable
 
   const renderCell = (vessel: VesselTableData, columnKey: CustomTableColumn['key']) => {
   switch (columnKey) {
-    case 'isTracked': {
+    case 'status': {
       return (
-        <>
-        <Button
-          color={vessel.isTracked ? 'success' : 'default'}
-          size="sm"
-          onPress={() => {
-            vessel.isTracked ? untrackVessel(vessel.imo) : trackVessel(vessel.imo)
-          }}
-        >
-          {vessel.isTracked ? 'Live': 'Track'}
-        </Button>
-        </>
+        <div className='flex justify-center'>
+          <Button
+            color={vessel.isTracked ? (vessel.queuedForTrack ? 'warning' : 'success') : (vessel.queuedForUntrack ? 'success': 'default')}
+            size="sm"
+            onPress={() => {
+              vessel.isTracked ? untrackVessel(vessel.imo) : trackVessel(vessel.imo)
+            }}
+          >
+            {vessel.isTracked ? (vessel.queuedForTrack ? 'Queued' : 'Live') : (vessel.queuedForUntrack ? 'Queud Removal': 'Track')}
+          </Button>
+        </div>
       )
     }
     default:

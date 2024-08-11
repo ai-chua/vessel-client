@@ -9,7 +9,7 @@ const TRACK_INTERVAL = MIN_IN_MS * 2
 const TIMEOUT_DURATION = MIN_IN_MS
 
 export function useTracker() {
-  const { trackedVessels } = useContext(TrackerContext)
+  const { trackedVessels, flushQueue } = useContext(TrackerContext)
 
   const isFirstCall = useRef(true)
 
@@ -46,7 +46,8 @@ export function useTracker() {
     setIs2MinsSinceLastTrackCall(false)
     setIsTrackedDataTimedout(false)
     startTrackTimer()
-  }, [startTrackTimer, trackedVessels])
+    flushQueue()
+  }, [flushQueue, startTrackTimer, trackedVessels])
 
   useEffect(() => {
     // hackish solution to initiate trigger sendTrackRequest()

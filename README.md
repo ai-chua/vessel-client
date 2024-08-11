@@ -2,6 +2,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+Create `.env.local` on the root of the project
+```
+NEXT_PUBLIC_SERVER_PORT=8080 // This will be the port you use for vessel-server
+```
+
 First, run the development server:
 
 ```bash

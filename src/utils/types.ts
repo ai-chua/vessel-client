@@ -1,3 +1,8 @@
+export enum VesselTrackerStatus {
+  QUEUED = 'queued',
+  LIVE = 'live',
+  UNTRACKED = 'untracked'
+}
 export interface UpdatedVesselInformation {
   imo: number;
   lat: number;
@@ -21,5 +26,7 @@ export type CurrentVesselInformationPayload = {
 }
 
 export type VesselTableData = VesselInformation & {
-  isTracked: boolean
+  isTracked: boolean,
+  queuedForTrack: boolean,
+  queuedForUntrack: boolean
 }

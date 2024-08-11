@@ -1,7 +1,7 @@
 import { VesselInformation } from '@/utils/types'
 
 export interface CustomTableColumn {
-  key: keyof VesselInformation | 'isTracked';
+  key: keyof VesselInformation | 'status';
   label: string;
 }
 
@@ -31,7 +31,7 @@ export const tableColumns: CustomTableColumn[] = [
     label: 'Destination'
   },
   {
-    key: 'isTracked',
-    label: ''
+    key: 'status',
+    label: 'Toggle Tracking'
   }
 ]
