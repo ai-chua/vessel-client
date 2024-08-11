@@ -15,7 +15,7 @@ export async function postTrackRequest(vesselIds: VesselInformation['imo'][]): P
       alert(`Failed to track vessels: ${response.status}`)
       return
     }
-    console.info('Success making POST /track call')
+    console.info('Success making POST /track call at', new Date().toString(), 'imos', vesselIds)
   } catch (error) {
     console.error('Error tracking vessels:', error)
   }

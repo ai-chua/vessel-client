@@ -35,7 +35,7 @@ export default function WebsocketComponent({ children }: WebsocketComponentProps
     }
 
     const handleLatestVesselInformationEvent = (data: any) => {
-      console.info('handleLatestVesselInformationEvent received message', data)
+      console.info('handleLatestVesselInformationEvent received message', data, 'at', new Date().toString())
       upsertVesselData(data)
     }
 
