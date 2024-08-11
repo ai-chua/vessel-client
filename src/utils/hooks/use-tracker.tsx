@@ -14,6 +14,7 @@ export function useTracker() {
   const { trackedVessels } = useContext(TrackerContext)
 
   const isFirstCall = useRef<boolean>(true)
+
   const [trackIntervalTimerId, setTrackIntervalTimerId] = useState<NodeJS.Timeout | null>(null)
 
   const startTrackTimerRef = useRef<() => void>(() => {})
